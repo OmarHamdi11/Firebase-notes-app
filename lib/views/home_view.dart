@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/helpers/custom_card_dialog.dart';
+import 'package:firebase_project/views/edit_category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -75,7 +76,18 @@ class _HomeViewState extends State<HomeView> {
                       desc: 'Make a choice',
                       type: DialogType.warning,
                       btnOkText: 'Update',
-                      btnOkOnPress: () async {},
+                      btnOkOnPress: () async {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return EditCategoryView(
+                                docId: data[index].id,
+                                oldName: data[index]['name'],
+                              );
+                            },
+                          ),
+                        );
+                      },
                       btnCancelText: 'Delete',
                       btnCancelOnPress: () async {
                         FirebaseFirestore.instance
