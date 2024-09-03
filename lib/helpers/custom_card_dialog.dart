@@ -6,7 +6,9 @@ AwesomeDialog customCardDialog({
   required String title,
   required String desc,
   required DialogType type,
+  String? btnOkText,
   void Function()? btnOkOnPress,
+  String? btnCancelText,
   void Function()? btnCancelOnPress,
 }) {
   return AwesomeDialog(
@@ -15,7 +17,9 @@ AwesomeDialog customCardDialog({
     dialogType: type,
     title: title,
     desc: desc,
+    btnOkText: btnOkText,
     btnOkOnPress: btnOkOnPress,
-    btnCancelOnPress: btnOkOnPress ?? null,
+    btnCancelText: btnCancelText,
+    btnCancelOnPress: btnCancelOnPress,
   );
 }

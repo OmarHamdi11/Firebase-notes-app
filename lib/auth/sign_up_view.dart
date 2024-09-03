@@ -3,7 +3,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/helpers/custom_awsome_dialog_message.dart';
-import 'package:firebase_project/auth/login_view.dart';
 import 'package:firebase_project/widgets/change_auth_button.dart';
 import 'package:firebase_project/widgets/confirm_auth_button.dart';
 import 'package:firebase_project/widgets/custom_back_arrow.dart';
@@ -98,13 +97,8 @@ class _SignUpViewState extends State<SignUpView> {
                             ChangeAuthButton(
                               text: 'Login?',
                               onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const LoginView();
-                                    },
-                                  ),
-                                );
+                                Navigator.of(context)
+                                    .pushReplacementNamed('LoginView');
                               },
                             )
                           ],
@@ -141,13 +135,8 @@ class _SignUpViewState extends State<SignUpView> {
                                 );
                                 FirebaseAuth.instance.currentUser!
                                     .sendEmailVerification();
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const LoginView();
-                                    },
-                                  ),
-                                );
+                                Navigator.of(context)
+                                    .pushReplacementNamed('LoginView');
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'weak-password') {
                                   customAwsomeDialogMessage(

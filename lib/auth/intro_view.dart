@@ -1,5 +1,3 @@
-import 'package:firebase_project/auth/login_view.dart';
-import 'package:firebase_project/auth/sign_up_view.dart';
 import 'package:firebase_project/widgets/custom_auth_choose_button.dart';
 import 'package:flutter/material.dart';
 
@@ -51,26 +49,14 @@ class IntroView extends StatelessWidget {
                       choose: true,
                       text: 'Login',
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const LoginView();
-                            },
-                          ),
-                        );
+                        Navigator.of(context).pushNamed('LoginView');
                       },
                     ),
                     CustomAuthChooseButton(
                       choose: false,
                       text: 'Sign up',
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const SignUpView();
-                            },
-                          ),
-                        );
+                        Navigator.of(context).pushNamed('SignUpView');
                       },
                     ),
                   ],

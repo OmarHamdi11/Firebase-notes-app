@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:firebase_project/auth/login_view.dart';
+import 'package:firebase_project/auth/sign_up_view.dart';
+import 'package:firebase_project/views/add_category_view.dart';
 import 'package:firebase_project/views/home_view.dart';
 import 'package:firebase_project/auth/intro_view.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +42,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        'IntroView': (context) => const IntroView(),
+        'HomeView': (context) => const HomeView(),
+        'LoginView': (context) => const LoginView(),
+        'SignUpView': (context) => const SignUpView(),
+        'AddCategoryView': (context) => const AddCategoryView(),
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         textTheme: GoogleFonts.shipporiMinchoTextTheme(

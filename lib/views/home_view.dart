@@ -2,8 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/helpers/custom_card_dialog.dart';
-import 'package:firebase_project/views/add_category_view.dart';
-import 'package:firebase_project/auth/intro_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -18,8 +16,10 @@ class _HomeViewState extends State<HomeView> {
   bool isLoading = true;
   List<QueryDocumentSnapshot> data = [];
   getData() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('categories').get();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('categories')
+        .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
 
     data.addAll(snapshot.docs);
     isLoading = false;
@@ -38,13 +38,7 @@ class _HomeViewState extends State<HomeView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const AddCategoryView();
-              },
-            ),
-          );
+          Navigator.of(context).pushNamed('AddCategoryView');
         },
         child: const Icon(Icons.add),
       ),
@@ -56,11 +50,8 @@ class _HomeViewState extends State<HomeView> {
               GoogleSignIn googleSignIn = GoogleSignIn();
               googleSignIn.disconnect();
               await FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                builder: (constext) {
-                  return const IntroView();
-                },
-              ), (route) => false);
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('IntroView', (route) => false);
             },
             icon: const Icon(Icons.exit_to_app),
           )
@@ -79,25 +70,22 @@ class _HomeViewState extends State<HomeView> {
                 return InkWell(
                   onLongPress: () {
                     customCardDialog(
-                            context: context,
-                            title: 'Warning',
-                            desc: 'Delete Category ?',
-                            type: DialogType.warning,
-                            btnOkOnPress: () async {
-                              FirebaseFirestore.instance
-                                  .collection('categories')
-                                  .doc(data[index].id)
-                                  .delete();
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const HomeView();
-                                  },
-                                ),
-                              );
-                            },
-                            btnCancelOnPress: () {})
-                        .show();
+                      context: context,
+                      title: 'Warning',
+                      desc: 'Make a choice',
+                      type: DialogType.warning,
+                      btnOkText: 'Update',
+                      btnOkOnPress: () async {},
+                      btnCancelText: 'Delete',
+                      btnCancelOnPress: () async {
+                        FirebaseFirestore.instance
+                            .collection('categories')
+                            .doc(data[index].id)
+                            .delete();
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            'HomeView', (route) => false);
+                      },
+                    ).show();
                   },
                   child: Card(
                     child: Column(

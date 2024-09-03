@@ -3,8 +3,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/helpers/custom_awsome_dialog_message.dart';
 import 'package:firebase_project/helpers/show_snak_bar_message.dart';
-import 'package:firebase_project/views/home_view.dart';
-import 'package:firebase_project/auth/sign_up_view.dart';
 import 'package:firebase_project/widgets/change_auth_button.dart';
 import 'package:firebase_project/widgets/confirm_auth_button.dart';
 import 'package:firebase_project/widgets/custom_back_arrow.dart';
@@ -47,13 +45,7 @@ class _LoginViewState extends State<LoginView> {
 
     // Once signed in, return the UserCredential
     await FirebaseAuth.instance.signInWithCredential(credential);
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) {
-          return const HomeView();
-        },
-      ),
-    );
+    Navigator.of(context).pushReplacementNamed('HomeView');
   }
 
   @override
@@ -168,13 +160,8 @@ class _LoginViewState extends State<LoginView> {
                                   ChangeAuthButton(
                                     text: 'Sign Up?',
                                     onTap: () {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return const SignUpView();
-                                          },
-                                        ),
-                                      );
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('SignUpView');
                                     },
                                   )
                                 ],
@@ -218,13 +205,9 @@ class _LoginViewState extends State<LoginView> {
                                       isLoading = false;
                                       setState(() {});
                                       if (credential.user!.emailVerified) {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return const HomeView();
-                                            },
-                                          ),
-                                        );
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                'HomeView', (route) => false);
                                       } else {
                                         customAwsomeDialogMessage(
                                                 context: context,

@@ -1,7 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/helpers/custom_awsome_dialog_message.dart';
-import 'package:firebase_project/views/home_view.dart';
 import 'package:firebase_project/widgets/confirm_auth_button.dart';
 import 'package:firebase_project/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +24,7 @@ class _AddCategoryViewState extends State<AddCategoryView> {
     return categories
         .add({
           'name': categoryName,
+          'id': FirebaseAuth.instance.currentUser!.uid
         })
         .then(
           (value) => customAwsomeDialogMessage(
@@ -76,13 +77,8 @@ class _AddCategoryViewState extends State<AddCategoryView> {
                   onPressed: () async {
                     if (formState.currentState!.validate()) {
                       await addUser();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeView();
-                          },
-                        ),
-                      );
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          'HomeView', (route) => false);
                     }
                   },
                 ),
